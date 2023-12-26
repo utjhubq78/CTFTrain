@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+ db:
+    image: mysql:5.7
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: MBD
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+ score:
+    image: score
+    ports:
+      - "5000:5000"
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: wordpress
+
+ sock:
+    image: sock
+    ports:
+      - "3030:3030"
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: wordpress
+
+ cron:
+    image: cron
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_NAME: wordpress
+      DB_USER: wordpress
+      DB_PASSWORD: wordpress
+
+
+
+volumes:
+    db_data: {}

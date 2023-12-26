@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+ web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    networks:
+      - webnet
+ redis:
+    image: redis:latest
+    networks:
+      - webnet
+
+networks:
+ webnet:
+    driver: bridge

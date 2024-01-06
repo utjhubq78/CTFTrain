@@ -17,7 +17,7 @@ def put_flag (flag,time):
     host = "db",
     user='wordpress',
     password='wordpress',
-    database='MBD'
+    database='wordpress'
   )
   num_f=0
 

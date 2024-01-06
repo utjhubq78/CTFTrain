@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema MBD
+-- Schema wordpress
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema MBD
+-- Schema wordpress
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `MBD` DEFAULT CHARACTER SET utf8 ;
-USE `MBD` ;
+CREATE SCHEMA IF NOT EXISTS `wordpress` DEFAULT CHARACTER SET utf8 ;
+USE `wordpress` ;
 
 -- -----------------------------------------------------
--- Table `MBD`.`User`
+-- Table `wordpress`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MBD`.`User` (
+CREATE TABLE IF NOT EXISTS `wordpress`.`User` (
   `id` INT NOT NULL,
   `login` VARCHAR(45) NULL,
   `pass` VARCHAR(45) NULL,
@@ -30,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `MBD`.`Flags`
+-- Table `wordpress`.`Flags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MBD`.`Flags` (
+CREATE TABLE IF NOT EXISTS `wordpress`.`Flags` (
   `id` INT NOT NULL,
   `flag` VARCHAR(45) NULL,
   `time` TIME NULL,
@@ -41,9 +41,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `MBD`.`Send_flags`
+-- Table `wordpress`.`Send_flags`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MBD`.`Send_flags` (
+CREATE TABLE IF NOT EXISTS `wordpress`.`Send_flags` (
   `id` INT NULL,
   `id_usr` INT NULL,
   `id_flag` INT NULL,
@@ -52,12 +52,12 @@ CREATE TABLE IF NOT EXISTS `MBD`.`Send_flags` (
   INDEX `flg_idx` (`id_flag` ASC) VISIBLE,
   CONSTRAINT `usr`
     FOREIGN KEY (`id_usr`)
-    REFERENCES `MBD`.`User` (`id`)
+    REFERENCES `wordpress`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `flg`
     FOREIGN KEY (`id_flag`)
-    REFERENCES `MBD`.`Flags` (`id`)
+    REFERENCES `wordpress`.`Flags` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

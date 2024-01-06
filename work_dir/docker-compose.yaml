@@ -1,49 +1,66 @@
-version: '3.7'
+version: '3.8'
 
 services:
- db:
-    image: mysql:5.7
-    volumes:
-      - ./initdb:/docker-entrypoint-initdb.d
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: MBD
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+    db:
+        image: mysql:5.7
+        command: --init-file=/etc/mysql/init.sql
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./init.sql:/etc/mysql/init.sql
+        restart: always
+        container_name: db
+        networks: 
+            - net
+        environment:
+          MYSQL_ROOT_PASSWORD: somewordpress
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: wordpress
 
- score:
-    image: score
-    ports:
-      - "5000:5000"
-    restart: always
-    environment:
-      DB_HOST: db
-      DB_NAME: wordpress
-      DB_USER: wordpress
-      DB_PASSWORD: wordpress
+    score:
+        build: scoreboard
+        container_name: scoreboard
+        networks: 
+            - net
+        ports:
+          - "5000:5000"
+        restart: always
+        environment:
+          DB_HOST: db
+          DB_NAME: wordpress
+          DB_USER: wordpress
+          DB_PASSWORD: wordpress
+    cron:
+        build: cron
+        container_name: cront
+        networks: 
+            - net
+        restart: always
+        environment:
+          DB_HOST: db
+          DB_NAME: wordpress
+          DB_USER: wordpress
+          DB_PASSWORD: wordpress
+    sock:
+        build: socket_server
+        container_name: socket-user
+        networks: 
+            - net
+        ports:
+            - 3030:3030
+        restart: always
+        environment:
+          DB_HOST: db
+          DB_NAME: wordpress
+          DB_USER: wordpress
+          DB_PASSWORD: wordpress
 
- sock:
-    image: sock
-    ports:
-      - "3030:3030"
-    restart: always
-    environment:
-      DB_HOST: db
-      DB_NAME: wordpress
-      DB_USER: wordpress
-      DB_PASSWORD: wordpress
 
- cron:
-    image: cron
-    restart: always
-    environment:
-      DB_HOST: db
-      DB_NAME: wordpress
-      DB_USER: wordpress
-      DB_PASSWORD: wordpress
-
+networks:
+    net:
+        name: net
+        driver: bridge
 
 
 volumes:
+    mysql-data:
     db_data: {}
